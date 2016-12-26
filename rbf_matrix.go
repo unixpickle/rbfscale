@@ -16,6 +16,8 @@ type rbfMatrix struct {
 	Variance float64
 	Width    int
 	Height   int
+
+	rbfCache [][]float64
 }
 
 // Dim returns the total number of pixels.
@@ -50,9 +52,26 @@ func (n *rbfMatrix) applyPoint(x, y int, in linalg.Vector) float64 {
 }
 
 func (n *rbfMatrix) rbf(x1, y1, x2, y2 int) float64 {
-	// TODO: cache RBF kernel values.
-	dist := (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)
-	return math.Exp(-float64(dist) / (2 * n.Variance))
+	if n.rbfCache == nil {
+		maxDist := int(-2*math.Log(2*n.Variance*epsilon) + 4)
+		n.rbfCache = make([][]float64, maxDist)
+		for i := range n.rbfCache {
+			n.rbfCache[i] = make([]float64, maxDist)
+			for j := range n.rbfCache[i] {
+				dist := float64(i*i + j*j)
+				rbf := math.Exp(-dist / (2 * n.Variance))
+				n.rbfCache[i][j] = rbf
+			}
+		}
+	}
+	return n.rbfCache[absInt(x1-x2)][absInt(y1-y2)]
+}
+
+func absInt(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
 
 func pointBounds(x, y, variance float64) (minX, minY, maxX, maxY int) {
