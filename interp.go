@@ -11,7 +11,7 @@ import (
 
 const (
 	weightEpsilon = 1e-2
-	numChannels   = 4
+	numChannels   = 3
 )
 
 // An Interp uses an RBF network to interpolate between
@@ -74,7 +74,7 @@ func (n *Interp) At(x, y float64) color.Color {
 		R: uint8(channelSum[0] * 0xff),
 		G: uint8(channelSum[1] * 0xff),
 		B: uint8(channelSum[2] * 0xff),
-		A: uint8(channelSum[3] * 0xff),
+		A: 0xff,
 	}
 }
 
@@ -98,8 +98,8 @@ func getColorChannel(img image.Image, idx int) linalg.Vector {
 	var res linalg.Vector
 	for y := img.Bounds().Min.Y; y < img.Bounds().Max.Y; y++ {
 		for x := img.Bounds().Min.X; x < img.Bounds().Max.X; x++ {
-			r, g, b, a := color.RGBAModel.Convert(img.At(x, y)).RGBA()
-			nums := []uint32{r, g, b, a}
+			r, g, b, _ := color.RGBAModel.Convert(img.At(x, y)).RGBA()
+			nums := []uint32{r, g, b}
 			res = append(res, float64(nums[idx])/0xffff)
 		}
 	}
