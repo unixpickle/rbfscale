@@ -61,10 +61,12 @@ func (n *rbfMatrix) buildPixelCache(x, y int) []rbfCacheEntry {
 	for i := minY; i < maxY && i < n.Height; i++ {
 		for j := minX; j < maxX && j < n.Width; j++ {
 			scale := n.rbf(x, y, j, i)
-			res = append(res, rbfCacheEntry{
-				InIndex: j + i*n.Width,
-				Coeff:   scale,
-			})
+			if scale > epsilon {
+				res = append(res, rbfCacheEntry{
+					InIndex: j + i*n.Width,
+					Coeff:   scale,
+				})
+			}
 		}
 	}
 	return res
