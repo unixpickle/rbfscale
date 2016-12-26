@@ -13,8 +13,8 @@ Resizing is VERY slow. I resized a 30x36 image to get some comparisons:
 <th>RBF with &sigma;=1</th>
 </tr>
 <tr>
-<td>![Original image](samples/input.png)</td>
-<td>![Preview.app](samples/preview_osx.png)</td>
-<td>![Variance of 1](samples/variance_1.png)</td>
+<td><img src="https://raw.githubusercontent.com/unixpickle/rbfscale/master/samples/input.png"></td>
+<td><img src="https://raw.githubusercontent.com/unixpickle/rbfscale/master/samples/preview_osx.png"></td>
+<td><img src="https://raw.githubusercontent.com/unixpickle/rbfscale/master/samples/variance_1.png"></td>
 </tr>
 </table>
