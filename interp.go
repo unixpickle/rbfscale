@@ -4,6 +4,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"sync"
 
 	"github.com/unixpickle/num-analysis/conjgrad"
 	"github.com/unixpickle/num-analysis/linalg"
@@ -31,15 +32,26 @@ func NewInterp(img image.Image, variance float64) *Interp {
 		Width:    img.Bounds().Dx(),
 		Height:   img.Bounds().Dy(),
 	}
+
+	// Needed to prevent race conditions.
+	mat.buildCache()
+
 	res := &Interp{
 		variance: mat.Variance,
 		width:    mat.Width,
 		height:   mat.Height,
 	}
+	var wg sync.WaitGroup
+	wg.Add(3)
 	for channel := 0; channel < numChannels; channel++ {
-		colors := getColorChannel(img, channel)
-		res.weights[channel] = conjgrad.SolvePrec(mat, colors, weightEpsilon)
+		go func(i int) {
+			colors := getColorChannel(img, i)
+			res.weights[i] = conjgrad.SolvePrec(mat, colors, weightEpsilon)
+			wg.Done()
+		}(channel)
 	}
+	wg.Wait()
+
 	return res
 }
 
