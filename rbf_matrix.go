@@ -53,7 +53,7 @@ func (n *rbfMatrix) applyPoint(x, y int, in linalg.Vector) float64 {
 
 func (n *rbfMatrix) rbf(x1, y1, x2, y2 int) float64 {
 	if n.rbfCache == nil {
-		maxDist := int(-2*math.Log(2*n.Variance*epsilon) + 4)
+		maxDist := 2 * int(math.Sqrt(-math.Log(epsilon)*2*n.Variance)+1)
 		n.rbfCache = make([][]float64, maxDist)
 		for i := range n.rbfCache {
 			n.rbfCache[i] = make([]float64, maxDist)
@@ -75,7 +75,7 @@ func absInt(x int) int {
 }
 
 func pointBounds(x, y, variance float64) (minX, minY, maxX, maxY int) {
-	maxDist := -math.Log(2 * variance * epsilon)
+	maxDist := math.Sqrt(-math.Log(epsilon)*2*variance) + 1
 	minX = int(math.Max(0, x-maxDist))
 	minY = int(math.Max(0, y-maxDist))
 	maxX = int(x + maxDist + 1)
