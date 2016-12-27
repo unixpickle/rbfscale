@@ -43,10 +43,11 @@ func NewInterp(img image.Image, variance float64) *Interp {
 	}
 	var wg sync.WaitGroup
 	wg.Add(3)
+	precond := newPreconditioner(mat.Width, mat.Height, mat.Variance)
 	for channel := 0; channel < numChannels; channel++ {
 		go func(i int) {
 			colors := getColorChannel(img, i)
-			res.weights[i] = conjgrad.SolvePrec(mat, colors, weightEpsilon)
+			res.weights[i] = conjgrad.SolvePrec(mat, precond, colors, weightEpsilon)
 			wg.Done()
 		}(channel)
 	}
