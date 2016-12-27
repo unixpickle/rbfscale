@@ -4,7 +4,7 @@ This is an attempt to use [RBF networks](https://en.wikipedia.org/wiki/Radial_ba
 
 # Results
 
-Resizing is very slow. On a 2.6GHz Intel Core i7, it takes about 30 seconds to resize a 30x36 image using a variance of 2.
+Resizing is very slow. On a 2.6GHz Intel Core i7, it takes about 8 seconds to resize a 30x36 image using a variance of 2.
 
 RBF networks don't do much better than conventional interpolation algorithms for image resizing. I resized a 30x36 image to get some comparisons:
 
