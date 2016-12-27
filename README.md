@@ -27,7 +27,7 @@ Here is a larger 120x120 image scaled up to 240x240. Interestingly, you will not
 <tr>
 <th>Original</th>
 <th>Preview.app on OS X</th>
-<th>RBF with &sigma;=1.5</th>
+<th>RBF with &sigma;<sup>2</sup>=1.5</th>
 </tr>
 <tr>
 <td><img src="https://raw.githubusercontent.com/unixpickle/rbfscale/master/samples/poop_img/original.png"></td>
